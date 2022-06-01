@@ -1,0 +1,126 @@
+[14:22, 08/02/2022] Mateus Broilo: Teste Ifood:
+
+Primeira Questão: Era sobre interpolação (derivadas e tangentes, basicamente)
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+
+#
+# Complete the 'interpolate' function below.
+#
+# The function is expected to return a STRING.
+# The function accepts following parameters:
+#  1. INTEGER n
+#  2. INTEGER_ARRAY instances
+#  3. FLOAT_ARRAY price
+#
+
+def interpolate(n, instances, price):
+    # Write your code here
+    # priceExpected = price[1] + (instances - instances[1])/(instances[2] - instances[1]) * (price[2] - price[1]) -> formula of linear extrapolation
+    
+    #for i in range(len(instances)):
+        #if (price[i] <= 0.0):
+            #instances = instances.remove(instances[i])
+            #price = price.remove(price[i])
+        
+    
+    if (n > instances[-1]):
+        price = round(price[-2] + (n - instances[-2])/(instances[-1] - instances[-2]) * (price[-1] - price[-2]), 2)
+
+    elif (n < instances[0]):
+        price = round(price[0] + (n - instances[0])/(instances[1] - instances[0]) * (price[1] - price[0]), 2)
+    
+    elif (len(instances) == 1):
+        price = round(instances, 2)
+        
+    else:
+        
+        for i in range(len(instances)):
+            if (n == instances[i]):
+                price = round(price[i], 2)
+                
+            elif ((n > instances[i]) and (n < instances[i+1])):
+                price = round(price[i] + (n - instances[i])/(instances[i+1] - instances[i]) * (price[i+1] - price[i]), 2)
+                
+
+    
+    print(price)
+    return str(price)
+    
+if _name_ == '_main_':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    n = int(input().strip())
+
+    instances_count = int(input().strip())
+
+    instances = []
+
+    for _ in range(instances_count):
+        instances_item = int(input().strip())
+        instances.append(instances_item)
+
+    price_count = int(input().strip())
+
+    price = []
+
+    for _ in range(price_count):
+        price_item = float(input().strip())
+        price.append(price_item)
+
+    result = interpolate(n, instances, price)
+
+    fptr.write(result + '\n')
+
+    fptr.close()
+
+Segunda Questão: Era sobre databases (MySQL) -> Não fiz ou não terminei, mas a idéia geral era:
+select 
+     customers.name, max(orders.price)
+from 
+     curstomers
+inner join
+     orders on (id.orders = id.customers)
+group by
+     customers.name
+where
+     diferença de max e min order_data = 10 anos
+;
+
+Terceira Questão: Era sobre sobre Joint Probability Distribution
+* F(x,y) = C*x^2(1+y), para 0 .LE. x,y .LE. 3, encontrar o valor da constante
+* Resposta: A integral disso no intervalo definido tem de ser igual à 1. Calculando, encotra-se C = 2/135.
+
+Quarta Questão: Era sobre theory of moments
+* Perguntava qual era o primeiro momento de um distribuição gaussiana do tipo F(x)=exp(-x-A), ou algo assim, e dizia que foram observados os seguintes valores para x: 9, 10 e 11.
+* Resposta: O primeiro momento é a média, então (9+10+11)/3 = 10
+
+Quinta Questão: Era sobre distribuição de quantis. Dava uma lista de números e perguntava quais alternativas caiam dentro dos respectivos 1o, 2o e 3o quartís.
+* Resposta: Criei um dataframe no pandas com essa lista e usei a função quantile do numpy
+* df = pd.DataFrame({'data': lista)
+* qtl1 = df.lista.quantile(0.25)
+* qtl2 = df.lista.quantile(0.50)
+* qtl3 = df.lista.quantile(0.75)
+* E compara com as opções
+
+Sexta Questão: Era sobre R quadrado e R quadrado ajustado. Perguntava o que acontece quando se aumenta o número de features em uma regressão linear.
+
+Acho que isso aqui teria ajudado na Primeira Questão:
+
+l1 = [1,2,3,4,5,6]
+l2 = [5.25, 0.0, 3.43, 6.78, 0.0, 10.23]
+
+zipped = list(zip(l1,l2))
+
+for row in zipped:
+    if row[1] == 0.0:
+        zipped.remove(row)
+        
+zipped
